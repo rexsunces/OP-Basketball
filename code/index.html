@@ -1,0 +1,341 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1,minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="css/swiper.css" rel="stylesheet" />
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+    <script src="js/zepto.min.js"></script>
+    <script src="js/touch.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/jquery.easie.js"></script>
+    <link href="css/haoest.min.css" rel="stylesheet" />
+    <style>
+        @-webkit-keyframes myfirst{
+            0% {
+                width: 15%;
+                top: 60%;
+            }
+
+
+
+            50% {
+                width: 20%;
+                height: 12%;
+                top: 40%;
+            }
+
+
+            100% {
+                width: 18%;
+                height: 10%;
+                top: 20%;
+            }
+        }
+        @keyframes myfirst {
+            0% {
+                width: 15%;
+                top: 60%;
+            }
+
+            25% {
+                width:18%;
+                top:50%;
+            }
+
+            50% {
+                width:20%;
+                top:40%;
+            }
+            75% {
+                width: 18%;
+                top: 30%;
+            }
+
+            100% {
+                width: 15%;
+                top: 20%;
+            }
+        }
+        .myani {
+            animation: myfirst 2s;
+            -moz-animation: myfirst 2s; /* Firefox */
+            -webkit-animation: myfirst 2s; /* Safari 和 Chrome */
+            -o-animation: myfirst 2s; /* Opera */
+        }
+        body{
+            padding:0px;
+            margin:0px;
+        }
+        .page{
+            width:100%;
+            height:100%;
+            position:absolute;
+        }
+        .page-index{
+            background-image:url('img/back.png');
+            background-size:100% 100%;
+        }
+        .gai {
+            position: absolute;
+            width: 35px;
+            height: 35px;
+            left: 45%;
+            top: 90%;
+            background-image: url(img/gai.png);
+            background-size: 100% 100%;
+        }
+        .posi{
+            position:absolute;
+            left:10%;
+            top:30%;
+        }
+        .left {
+            position: absolute;
+            left:15%;
+            top:80%;
+            width:30%;
+        }
+        .right {
+            position: absolute;
+            left: 55%;
+            top: 80%;
+            width: 30%;
+        }
+        .ball {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            top: 80%;
+            left: 43.5%;
+        }
+        .basket {
+            position: absolute;
+            width: 45%;
+            height: 30%;
+            top: 18%;
+        }
+        .strength {
+            position: absolute;
+            width: 25px;
+            height: 70px;
+            left: 85%;
+            top: 58%;
+        }
+        .strength-text {
+            position: absolute;
+            top: 59%;
+            left: 78%;
+            width: 15px;
+        }
+        .strength-arrow {
+            position: absolute;
+            top: 57%;
+            left: 84%;
+            width: 40px;
+            height: 78px;
+        }
+        .strength-mask {
+            /*background-color: chartreuse;
+            position: absolute;
+            z-index: 99;
+            top: 62%;
+            left: 86%;
+            height: 43px;
+            width: 18px;*/
+            background-color: chartreuse;
+            position: absolute;
+            z-index: 99;
+            top: 61%;
+            left: 86%;
+            height: 45px;
+            width: 16px;
+            bottom:0px;
+        }
+    </style>
+
+</head>
+<body>
+  <div class="page page-index">
+      <img class="basket" src="img/basket.png" />
+      <div class="gai"></div>
+      <span class="posi"></span>
+      <img class="ball ani-rotateRight ani-iteration-infinite" src="img/ball.png" />
+      <!--<img class="left" src="img/left-arrow.png" />
+      <img class="right" src="img/right-arrow.png" />-->
+      <img class="strength" src="img/strength.png" />
+      <img class="strength-arrow" src="img/strength-arrow.png" />
+      <img class="strength-text" src="img/strength-text.png" />
+      <!--<div class="strength-mask"></div>-->
+      <div class="progress-container" id="prog">
+          <div class="progress"  style=";background-size:100% 100%;background-repeat:no-repeat;border-top:1px solid black">41</div>
+          <div class="progress-overlay"></div>
+      </div>
+  </div>
+</body>
+<script>
+    var mtime = 0;
+    var timer;
+    var timer_strength;
+    var stop_strength = false;
+    $j = jQuery.noConflict();
+    var i = 0;
+    var j = 0;
+    var j_direction = 0;
+    var direction = 0;
+    var screenHeight = document.documentElement.clientHeight || document.body.clientHeight;
+    var screenWidth = document.documentElement.clientWidth || document.body.clientWidth;
+    var maskHeight = $('#prog .progress').height();
+    var basketWidth = $('.basket').width();
+    $(function () {
+
+        timer_strength = setInterval(function () {
+            if (stop_strength == true) {
+
+            }
+            else {
+                if (j_direction == 0) {
+                    j++;
+                    
+                    if (j == 100) {
+                        j_direction = 1;
+                       
+                    }
+                }
+                else {
+                    j--;
+                    if (j == 0) {
+                        j_direction = 0;
+
+                    }
+                }
+                $('#prog .progress').css('height', j + '%').text(j);
+            }
+        }, 10);
+
+
+    //    var
+    //$cont = $('#prog'),
+    //$bar = $cont.find('.progress'),
+    //value = 0,
+    //time = 35;
+
+    //    function reset() {
+    //        value = 0;
+    //        $cont.removeClass('done');
+    //        $bar.css('height', '0%').text('0');
+    //        setTimeout(increment, 500);
+    //    }
+
+    //    function increment() {
+    //        value += 1;
+
+    //        $bar.css('height', value + '%')
+    //            .text(value);
+
+    //        if (value === 100) {
+    //            $cont.addClass('done');
+    //            setTimeout(reset, 3000);
+    //            return;
+    //        }
+
+    //        setTimeout(increment, time);
+    //    }
+
+    //    reset();
+
+
+
+        //timer_strength = setInterval(function () {
+        //    if (stop_strength == true) {
+
+        //    }
+        //    else {
+        //        j++;
+        //        $('.strength-mask').css('height', (maskHeight - j) + 'px')
+        //        if (maskHeight - j - 1 < 0) {
+        //            j = 0;
+        //            $('.strength-mask').css('height', maskHeight + 'px');
+        //        }
+        //    }
+        //}, 10);
+        setInterval(function () {
+            if (direction == 0) {
+
+                $('.basket').css('left', (i++) + 'px');
+                if (i + basketWidth > screenWidth) {
+                    direction = 1;
+                }
+            }
+            else {
+                $('.basket').css('left', (i--) + 'px');
+                if (i < 0) {
+                    direction = 0;
+                }
+            }
+           
+        }, 10);
+        $('.gai').on('touchstart pointerdown', function () {
+           
+            //$j('.ball').addClass("myani");
+            // $j('.ball').animate({ top: '30%' }, 2000);
+            if (!$j('.ball').is(":animated")) {
+                stop_strength = true;
+                var lidu = (j / 100).toFixed(2);
+                $('.posi').text("力度：" + lidu);
+                $j('.ball').animate({ top: (80-80*lidu)+'%', width: '60px', height: '60px' }, 2000, "easieEaseOutCubic", function () {
+                    $j('.ball').css('width', '50px').css('height', '50px').css('top', '80%');
+                    stop_strength = false;
+                })
+            }
+        })
+        //$('.gai').swipe(function () {
+        //    $('.posi').text($(this)[0].offsetLeft);
+        //})
+        //$('.gai').on('touchmove', function (event) {
+        //    if (event.targetTouches.length == 1) {
+        //        event.preventDefault();// 阻止浏览器默认事件，重要 
+        //        var touch = event.targetTouches[0];
+        //        // 把元素放在手指所在的位置
+        //        $('.posi').text(touch.pageX + 'px, ' + touch.pageY + 'px');
+        //        $('.gai').css("left", touch.pageX-25 + 'px');
+        //        $('.gai').css("top", touch.pageY -25+ 'px');
+        //    }
+        //});
+        //$('.left').on('touchstart pointerdown', function (event) {
+        //    mtime = 0;
+        //    t = setInterval(function () {
+        //        mtime += 100;
+        //    }, 100)
+        //})
+        //$('.left').on('touchmove', function (event) {
+        //    if (event.targetTouches.length == 1) {
+        //        event.preventDefault();// 阻止浏览器默认事件，重要 
+        //        var touch = event.targetTouches[0];
+        //        // 把元素放在手指所在的位置
+        //        $('.posi').text(touch.pageX + 'px, ' + touch.pageY + 'px');
+                
+        //    }
+        //});
+        //$('.left').on('touchend pointerup', function (event) {
+        //    clearInterval(t);
+        //    alert("共触摸了" + (mtime / 1000).toFixed(2) + "秒！");
+        //});
+        //$('.right').on('touchmove', function (event) {
+        //    if (event.targetTouches.length == 1) {
+        //        event.preventDefault();// 阻止浏览器默认事件，重要 
+        //        var touch = event.targetTouches[0];
+        //        // 把元素放在手指所在的位置
+        //        $('.posi').text(touch.pageX + 'px, ' + touch.pageY + 'px');
+        //        $('.gai').css("left", touch.pageX - 25 + 'px');
+        //        $('.gai').css("top", touch.pageY - 25 + 'px');
+        //    }
+        //});
+    })
+</script>
+
+</html>
