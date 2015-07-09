@@ -8,14 +8,14 @@
     <title></title>
     <link href="css/swiper.css" rel="stylesheet" />
     <link href="css/bootstrap.css" rel="stylesheet" />
-    <link href="css/style.css" rel="stylesheet" />
+    <link href="css/style.css?v=2" rel="stylesheet" />
     <script src="js/zepto.min.js"></script>
     <script src="js/touch.js"></script>
     <script src="js/jquery.js"></script>
     <script src="js/jquery.easie.js"></script>
     <link href="css/haoest.min.css" rel="stylesheet" />
     <style>
-        @-webkit-keyframes myfirst{
+        @-webkit-keyframes myfirst {
             0% {
                 width: 15%;
                 top: 60%;
@@ -36,6 +36,7 @@
                 top: 20%;
             }
         }
+
         @keyframes myfirst {
             0% {
                 width: 15%;
@@ -43,14 +44,15 @@
             }
 
             25% {
-                width:18%;
-                top:50%;
+                width: 18%;
+                top: 50%;
             }
 
             50% {
-                width:20%;
-                top:40%;
+                width: 20%;
+                top: 40%;
             }
+
             75% {
                 width: 18%;
                 top: 30%;
@@ -61,25 +63,34 @@
                 top: 20%;
             }
         }
+
         .myani {
             animation: myfirst 2s;
             -moz-animation: myfirst 2s; /* Firefox */
             -webkit-animation: myfirst 2s; /* Safari 和 Chrome */
             -o-animation: myfirst 2s; /* Opera */
         }
-        body{
-            padding:0px;
-            margin:0px;
+
+        body {
+            padding: 0px;
+            margin: 0px;
         }
-        .page{
-            width:100%;
-            height:100%;
-            position:absolute;
+
+        .hide {
+            display: none;
         }
-        .page-index{
-            background-image:url('img/back.png');
-            background-size:100% 100%;
+
+        .page {
+            width: 100%;
+            height: 100%;
+            position: absolute;
         }
+
+        .page-index {
+            background-image: url('img/back.png');
+            background-size: 100% 100%;
+        }
+
         .gai {
             position: absolute;
             width: 35px;
@@ -89,23 +100,27 @@
             background-image: url(img/gai.png);
             background-size: 100% 100%;
         }
-        .posi{
-            position:absolute;
-            left:10%;
-            top:30%;
+
+        .posi {
+            position: absolute;
+            left: 10%;
+            top: 30%;
         }
+
         .left {
             position: absolute;
-            left:15%;
-            top:80%;
-            width:30%;
+            left: 15%;
+            top: 80%;
+            width: 30%;
         }
+
         .right {
             position: absolute;
             left: 55%;
             top: 80%;
             width: 30%;
         }
+
         .ball {
             position: absolute;
             width: 50px;
@@ -113,12 +128,15 @@
             top: 80%;
             left: 43.5%;
         }
+
         .basket {
             position: absolute;
             width: 45%;
             height: 30%;
             top: 18%;
+            left:27%;
         }
+
         .strength {
             position: absolute;
             width: 25px;
@@ -126,12 +144,14 @@
             left: 85%;
             top: 58%;
         }
+
         .strength-text {
             position: absolute;
             top: 59%;
             left: 78%;
             width: 15px;
         }
+
         .strength-arrow {
             position: absolute;
             top: 57%;
@@ -139,6 +159,7 @@
             width: 40px;
             height: 78px;
         }
+
         .strength-mask {
             /*background-color: chartreuse;
             position: absolute;
@@ -154,37 +175,88 @@
             left: 86%;
             height: 45px;
             width: 16px;
-            bottom:0px;
+            bottom: 0px;
+        }
+
+        .rule-btn {
+            position: absolute;
+            left: 70%;
+            width: 28%;
+            top: 3%;
+        }
+
+        .clock {
+            position: absolute;
+            left: 5%;
+            width: 15%;
+            top: 3%;
+        }
+
+        .using-time-span {
+            position: absolute;
+            left: 24%;
+            top: 3%;
+            font-size: 30px;
+            color: #FF9900;
+            font-style: italic;
+            font-family: fantasy;
+            /*font-style: italic;
+            color: #FF9900;
+            font-family: fantasy;
+            text-shadow: 0 0 6px #F96, -1px -1px #FFF, 1px -1px #444;*/
+        }
+
+        .rules {
+            position: absolute;
+            width: 80%;
+            left: 10%;
+            top: 15%;
+            z-index: 998;
+        }
+
+        .close-rule-btn {
+            position: absolute;
+            width: 10%;
+            left: 78%;
+            top: 16%;
+            z-index: 999;
         }
     </style>
 
 </head>
 <body>
-  <div class="page page-index">
-      <img class="basket" src="img/basket.png" />
-      <div class="gai"></div>
-      <span class="posi"></span>
-      <span class="combo">Combo</span>
-      <span class="score">Score</span>
-      <img class="ball ani-rotateRight ani-iteration-infinite" src="img/ball.png" />
-      <!--<img class="left" src="img/left-arrow.png" />
-      <img class="right" src="img/right-arrow.png" />-->
-      <img class="strength" src="img/strength.png" />
-      <img class="strength-arrow" src="img/strength-arrow.png" />
-      <img class="strength-text" src="img/strength-text.png" />
-      <!--<div class="strength-mask"></div>-->
-      <div class="progress-container" id="prog">
-          <div class="progress"  style=";background-size:100% 100%;background-repeat:no-repeat;border-top:1px solid black">41</div>
-          <div class="progress-overlay"></div>
-      </div>
-  </div>
+    <div class="page page-index">
+        <img class="basket" src="img/basket.png" />
+        <img class="clock" src="img/clock.png" />
+        <img class="rule-btn" src="img/rule-btn.png" />
+        <div class="using-time-span">0.00S</div>
+        <div class="rule-div hide">
+            <img class="rules" src="img/rules.png" />
+            <img class="close-rule-btn" src="img/close-rule-btn.png" />
+        </div>
+
+        <div class="gai"></div>
+        <span class="posi"></span>
+        <span class="combo">Combo</span>
+        <span class="score">Score</span>
+        <img class="ball " src="img/ball.png" />
+        <img class="strength" src="img/strength.png" />
+        <img class="strength-arrow" src="img/strength-arrow.png" />
+        <img class="strength-text" src="img/strength-text.png" />
+        <div class="progress-container" id="prog">
+            <div class="progress" style=";background-size:100% 100%;background-repeat:no-repeat;border-top:1px solid black"></div>
+            <div class="progress-overlay"></div>
+        </div>
+    </div>
 </body>
 <script>
+    var gameStart = false;
     var combo = 0;
     var scoreTotal = 0;
     var mtime = 0;
     var timer;
     var timer_strength;
+    var timer_basket;
     var stop_strength = false;
     $j = jQuery.noConflict();
     var i = 0;
@@ -195,6 +267,14 @@
     var screenWidth = document.documentElement.clientWidth || document.body.clientWidth;
     var maskHeight = $('#prog .progress').height();
     var basketWidth = $('.basket').width();
+
+    function GameEnd() {
+        clearInterval(timer_basket);
+        clearInterval(timer_strength);
+        //上传分数TODO:
+        //alert("游戏结束，共耗时：" + (mtime / 1000).toFixed(2) + "秒！");
+        alert("恭喜完成疯狂投篮任务，快快邀请好友一起挑战吧！");
+    }
     function GameTimerStart() {
         timer_strength = setInterval(function () {
             if (stop_strength == true) {
@@ -216,11 +296,11 @@
 
                     }
                 }
-                $('#prog .progress').css('height', j + '%').text(j);
+                $('#prog .progress').css('height', j + '%');
             }
         }, 10);
 
-        setInterval(function () {
+        timer_basket= setInterval(function () {
             if (direction == 0) {
 
                 $('.basket').css('left', (i++) + 'px');
@@ -234,43 +314,44 @@
                     direction = 0;
                 }
             }
-
+            mtime += 20;
+            $('.using-time-span').text((mtime / 1000).toFixed(2) + "S");
         }, 20);
     }
     $(function () {
-      GameTimerStart();
-       
-      $('.combo').text("Combo : x" + combo)
-      $('.score').text("Score : " + scoreTotal)
-    //    var
-    //$cont = $('#prog'),
-    //$bar = $cont.find('.progress'),
-    //value = 0,
-    //time = 35;
+        // GameTimerStart();
 
-    //    function reset() {
-    //        value = 0;
-    //        $cont.removeClass('done');
-    //        $bar.css('height', '0%').text('0');
-    //        setTimeout(increment, 500);
-    //    }
+        $('.combo').text("Combo : x" + combo)
+        $('.score').text("Score : " + scoreTotal)
+        //    var
+        //$cont = $('#prog'),
+        //$bar = $cont.find('.progress'),
+        //value = 0,
+        //time = 35;
 
-    //    function increment() {
-    //        value += 1;
+        //    function reset() {
+        //        value = 0;
+        //        $cont.removeClass('done');
+        //        $bar.css('height', '0%').text('0');
+        //        setTimeout(increment, 500);
+        //    }
 
-    //        $bar.css('height', value + '%')
-    //            .text(value);
+        //    function increment() {
+        //        value += 1;
 
-    //        if (value === 100) {
-    //            $cont.addClass('done');
-    //            setTimeout(reset, 3000);
-    //            return;
-    //        }
+        //        $bar.css('height', value + '%')
+        //            .text(value);
 
-    //        setTimeout(increment, time);
-    //    }
+        //        if (value === 100) {
+        //            $cont.addClass('done');
+        //            setTimeout(reset, 3000);
+        //            return;
+        //        }
 
-    //    reset();
+        //        setTimeout(increment, time);
+        //    }
+
+        //    reset();
 
 
 
@@ -287,42 +368,89 @@
         //        }
         //    }
         //}, 10);
-       
+        $('.rule-btn').on('singleTap', function () {
+            if ($('.rule-div').hasClass("hide")) {
+                $('.rule-div').removeClass("hide");
+            }
+        })
+        $('.close-rule-btn').on('singleTap', function () {
+            $('.rule-div').addClass("hide");
+        })
         $('.gai').on('touchstart pointerdown', function () {
-           
-            //$j('.ball').addClass("myani");
-            // $j('.ball').animate({ top: '30%' }, 2000);
-            if (!$j('.ball').is(":animated")) {
-                stop_strength = true;
-                var lidu = (j / 100).toFixed(2);
-                
-                $j('.ball').animate({ top: (80 - 80 * lidu) + '%', width: '60px', height: '60px' }, 2000, "easieEaseOutCubic", function () {
-                    var ballTop = screenHeight*parseInt($('.ball').css("top").substring(0, $('.ball').css("top").indexOf('%')))/100;
-                    var ballLeft =  parseInt($('.ball').css("left").substring(0, $('.ball').css("left").indexOf('px')));
-                    var basketTop = parseInt($('.basket').css("top").substring(0, $('.basket').css("top").indexOf('px')));
-                    var basketLeft =parseInt($('.basket').css("left").substring(0, $('.basket').css("left").indexOf('px')));
-                    var basketWidth = $('.basket').width();
-                    var basketHeight = $('.basket').height();
-                    var ballWidth = $('.ball').width();
-                    var ballHeight = $('.ball').height();
-                    var ballPoint = { left: (ballLeft + ballWidth / 2), top: (ballTop + ballHeight / 2) };
-                  
-                    var basketPoint = { left: (basketLeft + basketWidth / 2), top: (basketTop + basketHeight / 2) };
-  
-                    console.log("球宽度："+ballWidth+",球中心点与篮筐中心点宽度相差："+(ballPoint.left - basketPoint.left)+"||球高度："+ballHeight+",球中心点与篮筐中心点高度相差："+ (ballPoint.top - basketPoint.top)  );
-                    if (Math.abs(ballPoint.left - basketPoint.left) < (ballWidth) && (basketPoint.top - ballPoint.top) > 0 && (basketPoint.top - ballPoint.top) < 200) {
-                        $('.combo').text("Combo : x"+(++combo)).addClass("combo-hover");
-                       // $('.posi').text("进球了！Max combo: " + (++combo));
-                        scoreTotal++;
-                        $('.score').text("Score : " + scoreTotal);
-                    }
-                    else {
-                        combo = 0;
-                        $('.combo').text("Combo : x" + combo).removeClass("combo-hover");
-                    }
-                    $j('.ball').css('width', '50px').css('height', '50px').css('top', '80%');
-                    stop_strength = false;
-                })
+            if (gameStart == false) {
+                gameStart = true;
+                GameTimerStart();
+                $('.ball').addClass("ani-rotateRight ani-iteration-infinite");
+            }
+            else {
+                //$j('.ball').addClass("myani");
+                // $j('.ball').animate({ top: '30%' }, 2000);
+                if (!$j('.ball').is(":animated")) {
+                    stop_strength = true;
+                    var lidu = (j / 100).toFixed(2);
+
+                    $j('.ball').animate({ top: (80 - 80 * lidu) + '%', width: '60px', height: '60px' }, 2000, "easieEaseOutCubic", function () {
+                        var ballTop;
+                        var ballLeft;
+                        var basketTop;
+                        var basketLeft;
+                        if ($('.ball').css("top").indexOf('%') > 0) {
+                            ballTop = screenHeight * parseInt($('.ball').css("top").substring(0, $('.ball').css("top").indexOf('%'))) / 100;
+                        }
+                        else {
+                            ballTop = parseInt($('.ball').css("top").substring(0, $('.ball').css("top").indexOf('px')));
+                        }
+                        if ($('.ball').css("left").indexOf('%') > 0) {
+                            ballLeft = screenWidth * parseInt($('.ball').css("left").substring(0, $('.ball').css("left").indexOf('%'))) / 100;
+                        }
+                        else {
+                            ballLeft = parseInt($('.ball').css("left").substring(0, $('.ball').css("left").indexOf('px')));
+                        }
+
+                        if ($('.basket').css("top").indexOf('%') > 0) {
+                            basketTop = screenHeight * parseInt($('.basket').css("top").substring(0, $('.basket').css("top").indexOf('%'))) / 100;
+                        }
+                        else {
+                            basketTop = parseInt($('.basket').css("top").substring(0, $('.basket').css("top").indexOf('px')));
+                        }
+
+                        if ($('.basket').css("left").indexOf('%') > 0) {
+                            basketLeft = screenHeight * parseInt($('.basket').css("left").substring(0, $('.basket').css("left").indexOf('%'))) / 100;
+                        }
+                        else {
+                            basketLeft = parseInt($('.basket').css("left").substring(0, $('.basket').css("left").indexOf('px')));
+                        }
+
+                         //ballTop = screenHeight * parseInt($('.ball').css("top").substring(0, $('.ball').css("top").indexOf('%'))) / 100;
+                         //ballLeft = parseInt($('.ball').css("left").substring(0, $('.ball').css("left").indexOf('px')));
+                         //basketTop = parseInt($('.basket').css("top").substring(0, $('.basket').css("top").indexOf('px')));
+                         //basketLeft = parseInt($('.basket').css("left").substring(0, $('.basket').css("left").indexOf('px')));
+                        var basketWidth = $('.basket').width();
+                        var basketHeight = $('.basket').height();
+                        var ballWidth = $('.ball').width();
+                        var ballHeight = $('.ball').height();
+                        var ballPoint = { left: (ballLeft + ballWidth / 2), top: (ballTop + ballHeight / 2) };
+                       // alert(ballTop + "," + ballLeft + "," + basketTop + "," + basketLeft);
+                        var basketPoint = { left: (basketLeft + basketWidth / 2), top: (basketTop + basketHeight / 2) };
+
+                       // alert("球宽度：" + ballWidth + ",球中心点与篮筐中心点宽度相差：" + (ballPoint.left - basketPoint.left) + "||球高度：" + ballHeight + ",球中心点与篮筐中心点高度相差：" + (ballPoint.top - basketPoint.top));
+                        if (Math.abs(ballPoint.left - basketPoint.left) < (ballWidth) && (basketPoint.top - ballPoint.top) > 0 && (basketPoint.top - ballPoint.top) < 50) {
+                            $('.combo').text("Combo : x" + (++combo)).addClass("combo-hover");
+                            // $('.posi').text("进球了！Max combo: " + (++combo));
+                            scoreTotal++;
+                            $('.score').text("Score : " + scoreTotal);
+                            if (scoreTotal == 10) {
+                                GameEnd();
+                            }
+                        }
+                        else {
+                            combo = 0;
+                            $('.combo').text("Combo : x" + combo).removeClass("combo-hover");
+                        }
+                        $j('.ball').css('width', '50px').css('height', '50px').css('top', '80%');
+                        stop_strength = false;
+                    })
+                }
             }
         })
 
@@ -334,7 +462,7 @@
         //})
         //$('.gai').on('touchmove', function (event) {
         //    if (event.targetTouches.length == 1) {
-        //        event.preventDefault();// 阻止浏览器默认事件，重要 
+        //        event.preventDefault();// 阻止浏览器默认事件，重要
         //        var touch = event.targetTouches[0];
         //        // 把元素放在手指所在的位置
         //        $('.posi').text(touch.pageX + 'px, ' + touch.pageY + 'px');
@@ -350,11 +478,11 @@
         //})
         //$('.left').on('touchmove', function (event) {
         //    if (event.targetTouches.length == 1) {
-        //        event.preventDefault();// 阻止浏览器默认事件，重要 
+        //        event.preventDefault();// 阻止浏览器默认事件，重要
         //        var touch = event.targetTouches[0];
         //        // 把元素放在手指所在的位置
         //        $('.posi').text(touch.pageX + 'px, ' + touch.pageY + 'px');
-                
+
         //    }
         //});
         //$('.left').on('touchend pointerup', function (event) {
@@ -363,7 +491,7 @@
         //});
         //$('.right').on('touchmove', function (event) {
         //    if (event.targetTouches.length == 1) {
-        //        event.preventDefault();// 阻止浏览器默认事件，重要 
+        //        event.preventDefault();// 阻止浏览器默认事件，重要
         //        var touch = event.targetTouches[0];
         //        // 把元素放在手指所在的位置
         //        $('.posi').text(touch.pageX + 'px, ' + touch.pageY + 'px');

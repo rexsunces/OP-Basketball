@@ -21,7 +21,12 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-
+@font-face {
+  font-family: 'Audiowide';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Audiowide'), local('Audiowide-Regular'), url(http://themes.googleusercontent.com/static/fonts/audiowide/v2/8XtYtNKEyyZh481XVWfVOj8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+}
 
 
 .progress-container, .progress {
@@ -150,9 +155,9 @@
   font-family:fantasy;
 }
 .combo-hover{
-  -webkit-animation: neon5 1s ease-in-out infinite alternate;
+  /*-webkit-animation: neon5 1s ease-in-out infinite alternate;
   -moz-animation: neon5 1s ease-in-out infinite alternate;
-  animation: neon5 1s ease-in-out infinite alternate; 
+  animation: neon5 1s ease-in-out infinite alternate;*/ 
 }
 .score{
   position:absolute;
