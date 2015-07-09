@@ -74,3 +74,91 @@
   -o-animation: uploadarrow 900ms infinite linear;
   animation: uploadarrow 900ms infinite linear;
 }
+@-webkit-keyframes neon5 {
+  from {
+    text-shadow: 0 0 10px #fff,
+               0 0 20px  #fff,
+               0 0 30px  #fff,
+               0 0 40px  #FF9900,
+               0 0 70px  #FF9900,
+               0 0 80px  #FF9900,
+               0 0 100px #FF9900,
+               0 0 150px #FF9900;
+  }
+  to {
+    text-shadow: 0 0 5px #fff,
+               0 0 10px #fff,
+               0 0 15px #fff,
+               0 0 20px #FF9900,
+               0 0 35px #FF9900,
+               0 0 40px #FF9900,
+               0 0 50px #FF9900,
+               0 0 75px #FF9900;
+  }
+}
+@-moz-keyframes neon5 {
+  from {
+    text-shadow: 0 0 10px #fff,
+               0 0 20px  #fff,
+               0 0 30px  #fff,
+               0 0 40px  #FF9900,
+               0 0 70px  #FF9900,
+               0 0 80px  #FF9900,
+               0 0 100px #FF9900,
+               0 0 150px #FF9900;
+  }
+  to {
+    text-shadow: 0 0 5px #fff,
+               0 0 10px #fff,
+               0 0 15px #fff,
+               0 0 20px #FF9900,
+               0 0 35px #FF9900,
+               0 0 40px #FF9900,
+               0 0 50px #FF9900,
+               0 0 75px #FF9900;
+  }
+}
+@keyframes neon5 {
+  from {
+    text-shadow: 0 0 10px #fff,
+               0 0 20px  #fff,
+               0 0 30px  #fff,
+               0 0 40px  #FF9900,
+               0 0 70px  #FF9900,
+               0 0 80px  #FF9900,
+               0 0 100px #FF9900,
+               0 0 150px #FF9900;
+  }
+  to {
+    text-shadow: 0 0 5px #fff,
+               0 0 10px #fff,
+               0 0 15px #fff,
+               0 0 20px #FF9900,
+               0 0 35px #FF9900,
+               0 0 40px #FF9900,
+               0 0 50px #FF9900,
+               0 0 75px #FF9900;
+  }
+}
+
+.combo{
+  position:absolute;
+  top:50%;
+  font-size:30px; 
+  color:#FF9900;
+  font-style: italic;
+  font-family:fantasy;
+}
+.combo-hover{
+  -webkit-animation: neon5 1s ease-in-out infinite alternate;
+  -moz-animation: neon5 1s ease-in-out infinite alternate;
+  animation: neon5 1s ease-in-out infinite alternate; 
+}
+.score{
+  position:absolute;
+  top:58%;
+  font-size:25px; 
+  color:#FF9900;
+  font-style: italic;
+  font-family:fantasy;
+}

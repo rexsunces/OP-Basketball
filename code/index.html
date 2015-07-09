@@ -164,6 +164,8 @@
       <img class="basket" src="img/basket.png" />
       <div class="gai"></div>
       <span class="posi"></span>
+      <span class="combo">Combo</span>
+      <span class="score">Score</span>
       <img class="ball ani-rotateRight ani-iteration-infinite" src="img/ball.png" />
       <!--<img class="left" src="img/left-arrow.png" />
       <img class="right" src="img/right-arrow.png" />-->
@@ -178,6 +180,8 @@
   </div>
 </body>
 <script>
+    var combo = 0;
+    var scoreTotal = 0;
     var mtime = 0;
     var timer;
     var timer_strength;
@@ -191,8 +195,7 @@
     var screenWidth = document.documentElement.clientWidth || document.body.clientWidth;
     var maskHeight = $('#prog .progress').height();
     var basketWidth = $('.basket').width();
-    $(function () {
-
+    function GameTimerStart() {
         timer_strength = setInterval(function () {
             if (stop_strength == true) {
 
@@ -200,10 +203,10 @@
             else {
                 if (j_direction == 0) {
                     j++;
-                    
+
                     if (j == 100) {
                         j_direction = 1;
-                       
+
                     }
                 }
                 else {
@@ -217,7 +220,28 @@
             }
         }, 10);
 
+        setInterval(function () {
+            if (direction == 0) {
 
+                $('.basket').css('left', (i++) + 'px');
+                if (i + basketWidth > screenWidth) {
+                    direction = 1;
+                }
+            }
+            else {
+                $('.basket').css('left', (i--) + 'px');
+                if (i < 0) {
+                    direction = 0;
+                }
+            }
+
+        }, 20);
+    }
+    $(function () {
+      GameTimerStart();
+       
+      $('.combo').text("Combo : x" + combo)
+      $('.score').text("Score : " + scoreTotal)
     //    var
     //$cont = $('#prog'),
     //$bar = $cont.find('.progress'),
@@ -263,22 +287,7 @@
         //        }
         //    }
         //}, 10);
-        setInterval(function () {
-            if (direction == 0) {
-
-                $('.basket').css('left', (i++) + 'px');
-                if (i + basketWidth > screenWidth) {
-                    direction = 1;
-                }
-            }
-            else {
-                $('.basket').css('left', (i--) + 'px');
-                if (i < 0) {
-                    direction = 0;
-                }
-            }
-           
-        }, 10);
+       
         $('.gai').on('touchstart pointerdown', function () {
            
             //$j('.ball').addClass("myani");
@@ -286,13 +295,40 @@
             if (!$j('.ball').is(":animated")) {
                 stop_strength = true;
                 var lidu = (j / 100).toFixed(2);
-                $('.posi').text("力度：" + lidu);
-                $j('.ball').animate({ top: (80-80*lidu)+'%', width: '60px', height: '60px' }, 2000, "easieEaseOutCubic", function () {
+                
+                $j('.ball').animate({ top: (80 - 80 * lidu) + '%', width: '60px', height: '60px' }, 2000, "easieEaseOutCubic", function () {
+                    var ballTop = screenHeight*parseInt($('.ball').css("top").substring(0, $('.ball').css("top").indexOf('%')))/100;
+                    var ballLeft =  parseInt($('.ball').css("left").substring(0, $('.ball').css("left").indexOf('px')));
+                    var basketTop = parseInt($('.basket').css("top").substring(0, $('.basket').css("top").indexOf('px')));
+                    var basketLeft =parseInt($('.basket').css("left").substring(0, $('.basket').css("left").indexOf('px')));
+                    var basketWidth = $('.basket').width();
+                    var basketHeight = $('.basket').height();
+                    var ballWidth = $('.ball').width();
+                    var ballHeight = $('.ball').height();
+                    var ballPoint = { left: (ballLeft + ballWidth / 2), top: (ballTop + ballHeight / 2) };
+                  
+                    var basketPoint = { left: (basketLeft + basketWidth / 2), top: (basketTop + basketHeight / 2) };
+  
+                    console.log("球宽度："+ballWidth+",球中心点与篮筐中心点宽度相差："+(ballPoint.left - basketPoint.left)+"||球高度："+ballHeight+",球中心点与篮筐中心点高度相差："+ (ballPoint.top - basketPoint.top)  );
+                    if (Math.abs(ballPoint.left - basketPoint.left) < (ballWidth) && (basketPoint.top - ballPoint.top) > 0 && (basketPoint.top - ballPoint.top) < 200) {
+                        $('.combo').text("Combo : x"+(++combo)).addClass("combo-hover");
+                       // $('.posi').text("进球了！Max combo: " + (++combo));
+                        scoreTotal++;
+                        $('.score').text("Score : " + scoreTotal);
+                    }
+                    else {
+                        combo = 0;
+                        $('.combo').text("Combo : x" + combo).removeClass("combo-hover");
+                    }
                     $j('.ball').css('width', '50px').css('height', '50px').css('top', '80%');
                     stop_strength = false;
                 })
             }
         })
+
+        function GoalOk() {
+
+        }
         //$('.gai').swipe(function () {
         //    $('.posi').text($(this)[0].offsetLeft);
         //})
