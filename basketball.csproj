@@ -67,8 +67,15 @@
     <Content Include="code\img\clock.png" />
     <Content Include="code\img\close-rule-btn.png" />
     <Content Include="code\img\gai.png" />
+    <Content Include="code\img\gaozhi-back.png" />
+    <Content Include="code\img\gaozhi-enter-btn.png" />
+    <Content Include="code\img\gaozhi-rank-btn.png" />
+    <Content Include="code\img\gaozhi-text.png" />
     <Content Include="code\img\jianbian.png" />
     <Content Include="code\img\loading.png" />
+    <Content Include="code\img\pointer.png" />
+    <Content Include="code\img\rank-back.png" />
+    <Content Include="code\img\rank-return-btn.png" />
     <Content Include="code\img\rule-btn.png" />
     <Content Include="code\img\rules.png" />
     <Content Include="code\img\strength-arrow.png" />

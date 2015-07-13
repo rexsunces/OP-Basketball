@@ -84,13 +84,111 @@
             width: 100%;
             height: 100%;
             position: absolute;
+            background-size: 100% 100%;
         }
 
         .page-index {
             background-image: url('img/back.png');
-            background-size: 100% 100%;
         }
 
+        .page-rank {
+            background-image: url('img/rank-back.png');
+        }
+
+            .page-rank .rank-return-btn {
+                top: 88%;
+                left: 5%;
+                width: 30%;
+                position: absolute;
+            }
+
+            .page-rank .rank-opacity-div {
+                position: absolute;
+                top: 18%;
+                left: 5%;
+                width: 90%;
+                height: 65%;
+                background-color: white;
+                opacity: 0.7;
+                border-radius: 20px;
+            }
+
+            .page-rank .rank-table-div {
+                position: absolute;
+                top: 20%;
+                left: 5%;
+                width: 90%;
+                min-height: 50%;
+            }
+
+            .page-rank table {
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 20px;
+                width: 95%;
+                text-align: center;
+                font-size: 8px;
+            }
+
+                .page-rank table th {
+                    height: 20px;
+                    border-radius: 5px;
+                    border: 2px solid white;
+                }
+
+                .page-rank table .th-xuhao {
+                    width: 12%;
+                    border-radius: 5px;
+                    border: 2px solid white;
+                }
+
+                .page-rank table .th-normal {
+                    width: 22%;
+                    border-radius: 5px;
+                    border: 2px solid white;
+                }
+
+                .page-rank table td {
+                    height: 20px;
+                    border: solid rgb(55, 183, 224);
+                    border-width: 0px 2px 2px 0px;
+                }
+
+        .page-gaozhi {
+            background-image: url('img/gaozhi-back.png');
+        }
+
+            .page-gaozhi .gaozhi-enter-btn {
+                top: 80%;
+                left: 5%;
+                width: 40%;
+                position: absolute;
+            }
+
+            .page-gaozhi .gaozhi-rank-btn {
+                top: 80%;
+                left: 53%;
+                width: 40%;
+                position: absolute;
+            }
+            .page-gaozhi .gaozhi-text {
+                position: absolute;
+                width: 90%;
+                left: 5%;
+                top: 25%;
+            }
+            .page-gaozhi .enter-pointer {
+                position: absolute;
+                width: 10%;
+                top: 85%;
+                left: 40%;
+            }
+            .page-gaozhi .rank-pointer {
+                position: absolute;
+                width: 10%;
+                top: 85%;
+                left: 88%;
+            }
         .gai {
             position: absolute;
             width: 35px;
@@ -134,7 +232,7 @@
             width: 45%;
             height: 30%;
             top: 18%;
-            left:27%;
+            left: 27%;
         }
 
         .strength {
@@ -225,7 +323,14 @@
 
 </head>
 <body>
-    <div class="page page-index">
+    <div class="page page-gaozhi page-current">
+        <img class="gaozhi-enter-btn" src="img/gaozhi-enter-btn.png" />
+        <img class="gaozhi-rank-btn" src="img/gaozhi-rank-btn.png" />
+        <img class="gaozhi-text" src="img/gaozhi-text.png" />
+        <img class="enter-pointer" src="img/pointer.png" />
+        <img class="rank-pointer" src="img/pointer.png" />
+    </div>
+    <div class="page page-index hide">
         <img class="basket" src="img/basket.png" />
         <img class="clock" src="img/clock.png" />
         <img class="rule-btn" src="img/rule-btn.png" />
@@ -248,6 +353,15 @@
             <div class="progress-overlay"></div>
         </div>
     </div>
+    <div class="page-rank page hide">
+        <div class="rank-opacity-div">
+
+        </div>
+        <div class="rank-table-div">
+            <table  class="rank-table"></table>
+        </div>
+        <img class="rank-return-btn" src="img/rank-return-btn.png" />
+    </div>
 </body>
 <script>
     var gameStart = false;
@@ -267,7 +381,72 @@
     var screenWidth = document.documentElement.clientWidth || document.body.clientWidth;
     var maskHeight = $('#prog .progress').height();
     var basketWidth = $('.basket').width();
+    var PageCtl = {
+        gamePoint: 0,
 
+        currentPageNumber: "gaozhi",
+
+        effects: { moveUp: 1, moveDown: 2, fade: 3 },
+
+        directions: { up: 1, down: -1 },
+
+        isAnimating: false,
+
+        pageMove: function (effect, pageNumber) {
+            if (!PageCtl.isAnimating) {
+                PageCtl.isAnimating = true;
+                var fromPage = ".page-" + PageCtl.currentPageNumber;
+                var toPage = ".page-" + pageNumber;
+                PageCtl.currentPageNumber = pageNumber;
+
+                switch (effect) {
+                    case PageCtl.effects.fade:
+                        outClass = 'ani-fadeOut';
+                        inClass = 'ani-fadeIn';
+                        break;
+                }
+
+                $(toPage).removeClass("hide");
+                $(fromPage).addClass(outClass);
+                $(toPage).addClass(inClass);
+
+                setTimeout(function () {
+                    $(fromPage).removeClass('page-current');
+                    $(fromPage).removeClass(outClass);
+                    $(fromPage).addClass("hide");
+                    //$(fromPage).find("*").addClass("hide");
+
+                    $(toPage).addClass('page-current');
+                    $(toPage).removeClass(inClass);
+                    //$(toPage).find("*").removeClass("hide");
+
+                    PageCtl.isAnimating = false;
+                }, 600);
+            }
+        },
+
+
+        loadComplete: function () {
+
+        }
+    };
+
+
+    //获取当前用户的微信Id
+    function GetNowUserId() {
+        nowUserId = getUrlParam("openid");
+        if (nowUserId != null) {
+            window.localStorage.setItem('haizhiyan01', nowUserId);
+            window.location = 'index.html?tag=0';
+            return false;
+        }
+        nowUserId = window.localStorage.getItem('haizhiyan01');
+        if (nowUserId == null || nowUserId == '') {
+            //需要授权获取用户id
+            window.location = '/wx/getopenidbyoath2.php?url=' + encodeURIComponent(window.location.pathname + window.location.search);
+            return false;
+        }
+    }
     function GameEnd() {
         clearInterval(timer_basket);
         clearInterval(timer_strength);
@@ -300,7 +479,7 @@
             }
         }, 10);
 
-        timer_basket= setInterval(function () {
+        timer_basket = setInterval(function () {
             if (direction == 0) {
 
                 $('.basket').css('left', (i++) + 'px');
@@ -320,54 +499,8 @@
     }
     $(function () {
         // GameTimerStart();
-
         $('.combo').text("Combo : x" + combo)
         $('.score').text("Score : " + scoreTotal)
-        //    var
-        //$cont = $('#prog'),
-        //$bar = $cont.find('.progress'),
-        //value = 0,
-        //time = 35;
-
-        //    function reset() {
-        //        value = 0;
-        //        $cont.removeClass('done');
-        //        $bar.css('height', '0%').text('0');
-        //        setTimeout(increment, 500);
-        //    }
-
-        //    function increment() {
-        //        value += 1;
-
-        //        $bar.css('height', value + '%')
-        //            .text(value);
-
-        //        if (value === 100) {
-        //            $cont.addClass('done');
-        //            setTimeout(reset, 3000);
-        //            return;
-        //        }
-
-        //        setTimeout(increment, time);
-        //    }
-
-        //    reset();
-
-
-
-        //timer_strength = setInterval(function () {
-        //    if (stop_strength == true) {
-
-        //    }
-        //    else {
-        //        j++;
-        //        $('.strength-mask').css('height', (maskHeight - j) + 'px')
-        //        if (maskHeight - j - 1 < 0) {
-        //            j = 0;
-        //            $('.strength-mask').css('height', maskHeight + 'px');
-        //        }
-        //    }
-        //}, 10);
         $('.rule-btn').on('singleTap', function () {
             if ($('.rule-div').hasClass("hide")) {
                 $('.rule-div').removeClass("hide");
@@ -421,19 +554,19 @@
                             basketLeft = parseInt($('.basket').css("left").substring(0, $('.basket').css("left").indexOf('px')));
                         }
 
-                         //ballTop = screenHeight * parseInt($('.ball').css("top").substring(0, $('.ball').css("top").indexOf('%'))) / 100;
-                         //ballLeft = parseInt($('.ball').css("left").substring(0, $('.ball').css("left").indexOf('px')));
-                         //basketTop = parseInt($('.basket').css("top").substring(0, $('.basket').css("top").indexOf('px')));
-                         //basketLeft = parseInt($('.basket').css("left").substring(0, $('.basket').css("left").indexOf('px')));
+                        //ballTop = screenHeight * parseInt($('.ball').css("top").substring(0, $('.ball').css("top").indexOf('%'))) / 100;
+                        //ballLeft = parseInt($('.ball').css("left").substring(0, $('.ball').css("left").indexOf('px')));
+                        //basketTop = parseInt($('.basket').css("top").substring(0, $('.basket').css("top").indexOf('px')));
+                        //basketLeft = parseInt($('.basket').css("left").substring(0, $('.basket').css("left").indexOf('px')));
                         var basketWidth = $('.basket').width();
                         var basketHeight = $('.basket').height();
                         var ballWidth = $('.ball').width();
                         var ballHeight = $('.ball').height();
                         var ballPoint = { left: (ballLeft + ballWidth / 2), top: (ballTop + ballHeight / 2) };
-                       // alert(ballTop + "," + ballLeft + "," + basketTop + "," + basketLeft);
+                        // alert(ballTop + "," + ballLeft + "," + basketTop + "," + basketLeft);
                         var basketPoint = { left: (basketLeft + basketWidth / 2), top: (basketTop + basketHeight / 2) };
 
-                       // alert("球宽度：" + ballWidth + ",球中心点与篮筐中心点宽度相差：" + (ballPoint.left - basketPoint.left) + "||球高度：" + ballHeight + ",球中心点与篮筐中心点高度相差：" + (ballPoint.top - basketPoint.top));
+                        // alert("球宽度：" + ballWidth + ",球中心点与篮筐中心点宽度相差：" + (ballPoint.left - basketPoint.left) + "||球高度：" + ballHeight + ",球中心点与篮筐中心点高度相差：" + (ballPoint.top - basketPoint.top));
                         if (Math.abs(ballPoint.left - basketPoint.left) < (ballWidth) && (basketPoint.top - ballPoint.top) > 0 && (basketPoint.top - ballPoint.top) < 50) {
                             $('.combo').text("Combo : x" + (++combo)).addClass("combo-hover");
                             // $('.posi').text("进球了！Max combo: " + (++combo));
@@ -454,51 +587,53 @@
             }
         })
 
+        $('.gaozhi-enter-btn').on('singleTap', function () {
+            PageCtl.pageMove(PageCtl.effects.fade, "index");
+        })
+        $('.gaozhi-rank-btn').on('singleTap', function () {
+            $('.rank-table').html("");
+            //$.get("/index.php?r=haizhiyan/ranklist", {
+
+            //}, function (data, textStatus) {
+            //    if (data.success = true) {
+            //        //获取成功
+            //        var rankstr = "<tr><th class='th-xuhao'>序号</th><th class='th-normal'>昵称</th><th class='th-normal'>投射时间</th><tr>";
+            //        //for (var i = 0; i < data.data.length; i++) {
+            //        //    rankstr += "<tr>" +
+            //        //        "<td class='th-align-center'>" + parseInt(i + 1) +
+            //        //        "</td><td class='th-align-center'>" + formatPalyerName(data.data[i].name == null ? data.data[i].openid : data.data[i].name) +
+            //        //        "</td><td class='th-align-center'>" + (data.data[i].sumtime == null ? "-" : data.data[i].sumtime) + " S" +
+            //        //        "</td><td class='th-align-center'>" + (data.data[i].sumnum == null ? "-" : data.data[i].sumnum) +
+            //        //        "</td>" +
+            //        //        "</tr>";
+            //        //}
+            //        $('.rank-table').append(rankstr);
+            //        pageCtl.pageMove(pageCtl.effects.fade, "rank");
+            //    }
+            //    else {
+            //        alert("数据获取失败！");
+            //    }
+            //})
+            var rankstr = "<tr><th class='th-xuhao'>序号</th><th class='th-normal'>昵称</th><th class='th-normal'>投射时间</th><tr>";
+            //for (var i = 0; i < data.data.length; i++) {
+            //    rankstr += "<tr>" +
+            //        "<td class='th-align-center'>" + parseInt(i + 1) +
+            //        "</td><td class='th-align-center'>" + formatPalyerName(data.data[i].name == null ? data.data[i].openid : data.data[i].name) +
+            //        "</td><td class='th-align-center'>" + (data.data[i].sumtime == null ? "-" : data.data[i].sumtime) + " S" +
+            //        "</td><td class='th-align-center'>" + (data.data[i].sumnum == null ? "-" : data.data[i].sumnum) +
+            //        "</td>" +
+            //        "</tr>";
+            //}
+            $('.rank-table').append(rankstr);
+            PageCtl.pageMove(PageCtl.effects.fade, "rank");
+        
+        })
+        $('.rank-return-btn').on('singleTap', function () {
+            PageCtl.pageMove(PageCtl.effects.fade, "gaozhi");
+        })
         function GoalOk() {
 
         }
-        //$('.gai').swipe(function () {
-        //    $('.posi').text($(this)[0].offsetLeft);
-        //})
-        //$('.gai').on('touchmove', function (event) {
-        //    if (event.targetTouches.length == 1) {
-        //        event.preventDefault();// 阻止浏览器默认事件，重要
-        //        var touch = event.targetTouches[0];
-        //        // 把元素放在手指所在的位置
-        //        $('.posi').text(touch.pageX + 'px, ' + touch.pageY + 'px');
-        //        $('.gai').css("left", touch.pageX-25 + 'px');
-        //        $('.gai').css("top", touch.pageY -25+ 'px');
-        //    }
-        //});
-        //$('.left').on('touchstart pointerdown', function (event) {
-        //    mtime = 0;
-        //    t = setInterval(function () {
-        //        mtime += 100;
-        //    }, 100)
-        //})
-        //$('.left').on('touchmove', function (event) {
-        //    if (event.targetTouches.length == 1) {
-        //        event.preventDefault();// 阻止浏览器默认事件，重要
-        //        var touch = event.targetTouches[0];
-        //        // 把元素放在手指所在的位置
-        //        $('.posi').text(touch.pageX + 'px, ' + touch.pageY + 'px');
-
-        //    }
-        //});
-        //$('.left').on('touchend pointerup', function (event) {
-        //    clearInterval(t);
-        //    alert("共触摸了" + (mtime / 1000).toFixed(2) + "秒！");
-        //});
-        //$('.right').on('touchmove', function (event) {
-        //    if (event.targetTouches.length == 1) {
-        //        event.preventDefault();// 阻止浏览器默认事件，重要
-        //        var touch = event.targetTouches[0];
-        //        // 把元素放在手指所在的位置
-        //        $('.posi').text(touch.pageX + 'px, ' + touch.pageY + 'px');
-        //        $('.gai').css("left", touch.pageX - 25 + 'px');
-        //        $('.gai').css("top", touch.pageY - 25 + 'px');
-        //    }
-        //});
     })
 </script>
 
