@@ -153,7 +153,35 @@
                     border: solid rgb(55, 183, 224);
                     border-width: 0px 2px 2px 0px;
                 }
+        .page-0 {
+            background-color: #dc292d;
+        }
 
+            .page-0 .loading {
+                width: 30%;
+                height: 40%;
+                position: absolute;
+                left: 50%;
+                top: 40%;
+                margin-top: -20%;
+                margin-left: -15%;
+                font-size: 20%;
+                color: #000;
+            }
+
+            .page-0 .loading-img {
+                width: 100%;
+                margin-bottom: 10%;
+            }
+
+            .page-0 .loading div {
+                position: absolute;
+                width: 100%;
+                top: 50%;
+                text-align: center;
+                font-size: 20px;
+                font-family: fantasy;
+            }
         .page-gaozhi {
             background-image: url('img/gaozhi-back.png');
         }
@@ -322,8 +350,14 @@
     </style>
 
 </head>
-<body>
-    <div class="page page-gaozhi page-current">
+<body onload="PageCtl.loadComplete()">
+    <div class="page page-0 page-current">
+        <div class="loading">
+            <img class="loading-img ani-rotateRight ani-iteration-infinite" src="img/loading.png" />
+            <div>Loading</div>
+        </div>
+    </div>
+    <div class="page page-gaozhi hide ">
         <img class="gaozhi-enter-btn" src="img/gaozhi-enter-btn.png" />
         <img class="gaozhi-rank-btn" src="img/gaozhi-rank-btn.png" />
         <img class="gaozhi-text" src="img/gaozhi-text.png" />
@@ -364,6 +398,8 @@
     </div>
 </body>
 <script>
+    var nowUserId;
+    var gameId;
     var gameStart = false;
     var combo = 0;
     var scoreTotal = 0;
@@ -381,10 +417,33 @@
     var screenWidth = document.documentElement.clientWidth || document.body.clientWidth;
     var maskHeight = $('#prog .progress').height();
     var basketWidth = $('.basket').width();
+    
+
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r != null) return unescape(r[2]); return null; //返回参数值
+    }
+    //获取当前用户的微信Id
+    function GetNowUserId() {
+        nowUserId = getUrlParam("openid");
+        if (nowUserId != null) {
+            window.localStorage.setItem('haizhiyan01', nowUserId);
+            window.location = 'index.html?tag=0';
+            return false;
+        }
+        nowUserId = window.localStorage.getItem('haizhiyan01');
+        if (nowUserId == null || nowUserId == '') {
+            //需要授权获取用户id
+            window.location = '/wx/getopenidbyoath2.php?url=' + encodeURIComponent(window.location.pathname + window.location.search);
+            return false;
+        }
+    }
+    GetNowUserId();
     var PageCtl = {
         gamePoint: 0,
 
-        currentPageNumber: "gaozhi",
+        currentPageNumber: 0,
 
         effects: { moveUp: 1, moveDown: 2, fade: 3 },
 
@@ -427,32 +486,42 @@
 
 
         loadComplete: function () {
-
+            PageCtl.pageMove(PageCtl.effects.fade, "gaozhi");
+            GetNowUserInfo();
         }
     };
 
-
-    //获取当前用户的微信Id
-    function GetNowUserId() {
-        nowUserId = getUrlParam("openid");
-        if (nowUserId != null) {
-            window.localStorage.setItem('haizhiyan01', nowUserId);
-            window.location = 'index.html?tag=0';
-            return false;
-        }
-        nowUserId = window.localStorage.getItem('haizhiyan01');
-        if (nowUserId == null || nowUserId == '') {
-            //需要授权获取用户id
-            window.location = '/wx/getopenidbyoath2.php?url=' + encodeURIComponent(window.location.pathname + window.location.search);
-            return false;
-        }
+    function GameReset() {
+        gameStart = false;
+        combo = 0;
+        scoreTotal = 0;
+        mtime = 0;
+        stop_strength = false;
+        i = 0;
+        j = 0;
+        j_direction = 0;
+        direction = 0;
+        PageCtl.pageMove(PageCtl.effects.fade, "gaozhi");
     }
     function GameEnd() {
         clearInterval(timer_basket);
         clearInterval(timer_strength);
-        //上传分数TODO:
-        //alert("游戏结束，共耗时：" + (mtime / 1000).toFixed(2) + "秒！");
-        alert("恭喜完成疯狂投篮任务，快快邀请好友一起挑战吧！");
+        $.get("/index.php?r=haizhiyan/play", {
+            "userId":nowUserId ,
+            "gameId": gameId,
+            "time": (mtime / 1000).toFixed(2)
+        }, function (data, textStatus) {
+            if (data.success = true) {
+                //更新成功
+                alert("恭喜完成疯狂投篮任务，快快邀请好友一起挑战吧！");
+                GameReset();
+            }
+            else {
+                alert("上传成绩失败！");
+                GameReset();
+
+            }
+        })
     }
     function GameTimerStart() {
         timer_strength = setInterval(function () {
@@ -592,41 +661,27 @@
         })
         $('.gaozhi-rank-btn').on('singleTap', function () {
             $('.rank-table').html("");
-            //$.get("/index.php?r=haizhiyan/ranklist", {
+            $.get("/index.php?r=haizhiyan/ranklist", {
 
-            //}, function (data, textStatus) {
-            //    if (data.success = true) {
-            //        //获取成功
-            //        var rankstr = "<tr><th class='th-xuhao'>序号</th><th class='th-normal'>昵称</th><th class='th-normal'>投射时间</th><tr>";
-            //        //for (var i = 0; i < data.data.length; i++) {
-            //        //    rankstr += "<tr>" +
-            //        //        "<td class='th-align-center'>" + parseInt(i + 1) +
-            //        //        "</td><td class='th-align-center'>" + formatPalyerName(data.data[i].name == null ? data.data[i].openid : data.data[i].name) +
-            //        //        "</td><td class='th-align-center'>" + (data.data[i].sumtime == null ? "-" : data.data[i].sumtime) + " S" +
-            //        //        "</td><td class='th-align-center'>" + (data.data[i].sumnum == null ? "-" : data.data[i].sumnum) +
-            //        //        "</td>" +
-            //        //        "</tr>";
-            //        //}
-            //        $('.rank-table').append(rankstr);
-            //        pageCtl.pageMove(pageCtl.effects.fade, "rank");
-            //    }
-            //    else {
-            //        alert("数据获取失败！");
-            //    }
-            //})
-            var rankstr = "<tr><th class='th-xuhao'>序号</th><th class='th-normal'>昵称</th><th class='th-normal'>投射时间</th><tr>";
-            //for (var i = 0; i < data.data.length; i++) {
-            //    rankstr += "<tr>" +
-            //        "<td class='th-align-center'>" + parseInt(i + 1) +
-            //        "</td><td class='th-align-center'>" + formatPalyerName(data.data[i].name == null ? data.data[i].openid : data.data[i].name) +
-            //        "</td><td class='th-align-center'>" + (data.data[i].sumtime == null ? "-" : data.data[i].sumtime) + " S" +
-            //        "</td><td class='th-align-center'>" + (data.data[i].sumnum == null ? "-" : data.data[i].sumnum) +
-            //        "</td>" +
-            //        "</tr>";
-            //}
-            $('.rank-table').append(rankstr);
-            PageCtl.pageMove(PageCtl.effects.fade, "rank");
-        
+            }, function (data, textStatus) {
+                if (data.success = true) {
+                    //获取成功
+                    var rankstr = "<tr><th class='th-xuhao'>序号</th><th class='th-normal'>昵称</th><th class='th-normal'>投射时间</th><tr>";
+                    for (var i = 0; i < data.data.length; i++) {
+                        rankstr += "<tr>" +
+                            "<td class='th-align-center'>" + parseInt(i + 1) +
+                            "</td><td class='th-align-center'>" + (data.data[i].name == null ? data.data[i].openid : data.data[i].name) +
+                            "</td><td class='th-align-center'>" + (data.data[i].time == null ? "-" : data.data[i].time) + " S" +
+                            "</td>" +
+                            "</tr>";
+                    }
+                    $('.rank-table').append(rankstr);
+                    PageCtl.pageMove(PageCtl.effects.fade, "rank");
+                }
+                else {
+                    alert("数据获取失败！");
+                }
+            })    
         })
         $('.rank-return-btn').on('singleTap', function () {
             PageCtl.pageMove(PageCtl.effects.fade, "gaozhi");
