@@ -150,8 +150,8 @@
 
                 .page-rank table td {
                     height: 20px;
-                    border: solid rgb(55, 183, 224);
-                    border-width: 0px 2px 2px 0px;
+                    border-radius: 5px;
+                    border: 2px solid white;
                 }
         .page-0 {
             background-color: #dc292d;
@@ -187,14 +187,14 @@
         }
 
             .page-gaozhi .gaozhi-enter-btn {
-                top: 80%;
+                top: 83%;
                 left: 5%;
                 width: 40%;
                 position: absolute;
             }
 
             .page-gaozhi .gaozhi-rank-btn {
-                top: 80%;
+                top: 83%;
                 left: 53%;
                 width: 40%;
                 position: absolute;
@@ -202,19 +202,20 @@
             .page-gaozhi .gaozhi-text {
                 position: absolute;
                 width: 90%;
+                height:55%;
                 left: 5%;
                 top: 25%;
             }
             .page-gaozhi .enter-pointer {
                 position: absolute;
                 width: 10%;
-                top: 85%;
+                top: 88%;
                 left: 40%;
             }
             .page-gaozhi .rank-pointer {
                 position: absolute;
                 width: 10%;
-                top: 85%;
+                top: 88%;
                 left: 88%;
             }
         .gai {
@@ -399,7 +400,7 @@
 </body>
 <script>
     var nowUserId;
-    var gameId;
+    var gameId="basketball_0714";
     var gameStart = false;
     var combo = 0;
     var scoreTotal = 0;
@@ -415,8 +416,15 @@
     var direction = 0;
     var screenHeight = document.documentElement.clientHeight || document.body.clientHeight;
     var screenWidth = document.documentElement.clientWidth || document.body.clientWidth;
+
     var maskHeight = $('#prog .progress').height();
-    var basketWidth = $('.basket').width();
+    var basketWidth;
+    if ($('.basket').css("width").indexOf('%') > 0) {
+        basketWidth = screenWidth * parseInt($('.basket').css("width").substring(0, $('.basket').css("width").indexOf('%'))) / 100;
+    }
+    else {
+        basketWidth = $('.basket').css("width").substring(0, $('.basket').css("width").indexOf('px'));
+    }
     
 
     function getUrlParam(name) {
@@ -506,10 +514,10 @@
     function GameEnd() {
         clearInterval(timer_basket);
         clearInterval(timer_strength);
-        $.get("/index.php?r=haizhiyan/play", {
+        $.get("/index.php?r=game/play", {
             "userId":nowUserId ,
             "gameId": gameId,
-            "time": (mtime / 1000).toFixed(2)
+            "timeUsed": mtime
         }, function (data, textStatus) {
             if (data.success = true) {
                 //更新成功
@@ -552,7 +560,8 @@
             if (direction == 0) {
 
                 $('.basket').css('left', (i++) + 'px');
-                if (i + basketWidth > screenWidth) {
+                //alert("测试：" + screenWidth+","+basketWidth);
+                if (i + parseInt( basketWidth) > screenWidth) {
                     direction = 1;
                 }
             }
@@ -661,8 +670,8 @@
         })
         $('.gaozhi-rank-btn').on('singleTap', function () {
             $('.rank-table').html("");
-            $.get("/index.php?r=haizhiyan/ranklist", {
-
+            $.get("/index.php?r=game/getrankbytime", {
+				"gameId": gameId
             }, function (data, textStatus) {
                 if (data.success = true) {
                     //获取成功
@@ -670,8 +679,8 @@
                     for (var i = 0; i < data.data.length; i++) {
                         rankstr += "<tr>" +
                             "<td class='th-align-center'>" + parseInt(i + 1) +
-                            "</td><td class='th-align-center'>" + (data.data[i].name == null ? data.data[i].openid : data.data[i].name) +
-                            "</td><td class='th-align-center'>" + (data.data[i].time == null ? "-" : data.data[i].time) + " S" +
+                            "</td><td class='th-align-center'>" + (data.data[i].user_name == null ? data.data[i].user_id : data.data[i].user_name) +
+                            "</td><td class='th-align-center'>" + (data.data[i].time_used == null ? "-" : (data.data[i].time_used/ 1000).toFixed(2)) + " S" +
                             "</td>" +
                             "</tr>";
                     }
